@@ -1,0 +1,32 @@
+﻿@using AppointmentsManagerBlazorApp.Model
+
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Provider</th>
+        <th>Date</th>
+        <th></th>
+    </tr>
+    @foreach (var call in CallItems)
+    {
+        <tr>
+            <td>@call.Id</td>
+            <td>@call.Name</td>
+            <td>@call.Provider</td>
+            <td>@call.Date</td>
+        </tr>
+    }
+</table>
+
+@code{
+    //[Parameter]
+    //public List<Call> CallItems { get; set; }
+
+    public List<Call> CallItems { get; set; } =
+        new List<Call>
+        {
+            new Call(){Id=1, Name="", Date = DateTime.Now },
+            new Call(){Id=2, Name="", Date = DateTime.Now }
+        };
+}

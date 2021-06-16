@@ -1,0 +1,28 @@
+﻿<div class="card bg-light mt-3" style="width:18rem ">
+    <div class="card-body">
+        <h3 class="card-title">Child Component</h3>
+        <p class="card-text">Child <code>Year</code>: @Year</p>
+    </div>
+</div>
+
+<button @onclick="UpdateYearFromChild">Update Year from Child</button>
+
+@code {
+    /// <summary>
+    /// You can't implement chained binds with @bind syntax in the child component.
+    /// An event handler and value must be specified separately to support updating
+    /// the property in the parent from the child component.
+    /// </summary>
+    private Random r = new Random();
+
+    [Parameter]
+    public int Year { get; set; }
+
+    [Parameter]
+    public EventCallback<int> YearChanged { get; set; }
+
+    private async Task UpdateYearFromChild()
+    {
+        await YearChanged.InvokeAsync(r.Next(1950, 2021));
+    }
+}
