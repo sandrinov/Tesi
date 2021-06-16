@@ -1,0 +1,23 @@
+﻿@page "/calls"
+@using AppointmentsManagerBlazorApp.Components
+@using AppointmentsManagerBlazorApp.Model
+
+
+<br />
+<CallsList Title="Calls " CallItems="ListOfCalls" OnDelete="DeleteCall" />
+
+@code
+{
+    List<Call> ListOfCalls { get; set; } =
+               new List<Call>
+               {
+                    new Call(){Id=1, Name="Call Zoom", Date = DateTime.Now, Provider="Zoom", Description="Blazor Course", Note="Use Visual Studio 2019" },
+                    new Call(){Id=2, Name="Call Teams", Date = new DateTime(2021, 6, 12), Provider="Teams", Description="C# Course", Note="Use Visual Studio Code" },
+                           };
+
+    public void DeleteCall(Call call)
+    {
+        this.ListOfCalls.Remove(call);
+    }
+
+}

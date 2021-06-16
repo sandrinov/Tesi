@@ -1,5 +1,7 @@
 ﻿@using AppointmentsManagerBlazorApp.Model
 
+<h2>@Title</h2>
+
 <table class="table">
     <tr>
         <th>Id</th>
@@ -15,18 +17,35 @@
             <td>@call.Name</td>
             <td>@call.Provider</td>
             <td>@call.Date</td>
+            <td>
+                @*<button class="btn btn-danger" @onclick="e=>DeleteCall(call)">Delete</button>*@
+                <button class="btn btn-danger" @onclick="e=>OnDelete.InvokeAsync(call)">Delete</button>
+            </td>
         </tr>
     }
 </table>
 
 @code{
-    //[Parameter]
-    //public List<Call> CallItems { get; set; }
+    [Parameter]
+    public List<Call> CallItems { get; set; }
 
-    public List<Call> CallItems { get; set; } =
-        new List<Call>
-        {
-            new Call(){Id=1, Name="", Date = DateTime.Now },
-            new Call(){Id=2, Name="", Date = DateTime.Now }
-        };
-}
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public EventCallback<Call> OnDelete { get; set; }
+
+    public void DeleteCall(Call call)
+    {
+        this.CallItems.Remove(call);
+    }
+
+
+    @*public List<Call> CallItems { get; set; } =
+                new List<Call>
+                {
+                    new Call(){Id=1, Name="Call Zoom", Date = DateTime.Now, Provider="Zoom", Description="Blazor Course", Note="Use Visual Studio 2019" },
+                    new Call(){Id=2, Name="Call Teams", Date = new DateTime(2021, 6, 12), Provider="Teams", Description="C# Course", Note="Use Visual Studio Code" },
+                };
+        *@
+ }
