@@ -1,7 +1,10 @@
 ﻿@using AppointmentsManagerBlazorApp.Model
 
 <h2>@Title</h2>
-
+<br />
+<button class="btn btn-success" 
+        @onclick ="e => OnCreate.InvokeAsync()"> Create new Call</button>
+<hr />
 <table class="table">
     <tr>
         <th>Id</th>
@@ -19,6 +22,7 @@
             <td>@call.Date</td>
             <td>
                 @*<button class="btn btn-danger" @onclick="e=>DeleteCall(call)">Delete</button>*@
+                <button class="btn btn-warning" @onclick="e=>OnEdit.InvokeAsync(call)">Edit</button>
                 <button class="btn btn-danger" @onclick="e=>OnDelete.InvokeAsync(call)">Delete</button>
             </td>
         </tr>
@@ -33,7 +37,12 @@
     public string Title { get; set; }
 
     [Parameter]
+    public EventCallback<Call> OnEdit { get; set; }
+    [Parameter]
     public EventCallback<Call> OnDelete { get; set; }
+    [Parameter]
+    public EventCallback OnCreate { get; set; }
+
 
     public void DeleteCall(Call call)
     {

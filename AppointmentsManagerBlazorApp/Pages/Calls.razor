@@ -3,21 +3,86 @@
 @using AppointmentsManagerBlazorApp.Model
 
 
+@if (CurrentCall == null)
+{
+    <CallsList Title="Calls " CallItems="ListOfCalls" OnDelete="DeleteCall" OnCreate="CreateCall" OnEdit="EditCall"/>
+}
+else
+{   
+    <CallDetail CallItem="CurrentCall" OnSave="SaveCall" OnCancel="Cancel"/> 
+}
+
 <br />
-<CallsList Title="Calls " CallItems="ListOfCalls" OnDelete="DeleteCall" />
+
 
 @code
 {
+    public Call CurrentCall { get; set; }
+
+
+
     List<Call> ListOfCalls { get; set; } =
                new List<Call>
                {
-                    new Call(){Id=1, Name="Call Zoom", Date = DateTime.Now, Provider="Zoom", Description="Blazor Course", Note="Use Visual Studio 2019" },
-                    new Call(){Id=2, Name="Call Teams", Date = new DateTime(2021, 6, 12), Provider="Teams", Description="C# Course", Note="Use Visual Studio Code" },
-                           };
+                    new Call(){ Id=1, Name="Call Zoom", Date = DateTime.Now, Provider="Zoom", Description="Blazor Course", Note="Use Visual Studio 2019" },
+                    new Call(){ Id=2, Name="Call Teams", Date = new DateTime(2021, 6, 12), Provider="Teams", Description="C# Course", Note="Use Visual Studio Code" },
+               };
 
     public void DeleteCall(Call call)
     {
         this.ListOfCalls.Remove(call);
     }
+
+    public void CreateCall()
+    {
+        this.CurrentCall = new Call();
+    }
+
+    public void EditCall(Call call)
+    {
+        this.CurrentCall = call;
+        //this.CurrentCall = new Call()
+        //{
+        //    Id = call.Id,
+        //    Name = call.Name,
+        //    Date = call.Date,
+        //    Description = call.Description,
+        //    Note = call.Note,
+        //    Provider = call.Provider
+        //};
+    }
+    public void SaveCall(Call call)
+    {
+        if (call.Id == 0)
+        {
+            this.ListOfCalls.Add(new Call()
+            {
+                Id = this.ListOfCalls.Count >0 ? this.ListOfCalls.Max(x=>x.Id) + 1 : 1,
+                Name = call.Name,
+                Date = call.Date,
+                Description = call.Description,
+                Note = call.Note,
+                Provider = call.Provider
+
+            });
+        }
+        else
+        {
+            var callToEdit = this.ListOfCalls.Single(x => x.Id == call.Id);
+            callToEdit.Name = call.Name;
+            callToEdit.Date = call.Date;
+            callToEdit.Description = call.Description;
+            callToEdit.Note = call.Note;
+            callToEdit.Provider = call.Provider;
+
+        }
+
+        this.CurrentCall = null;
+    }
+    public void Cancel()
+    {
+        this.CurrentCall = null;
+    }
+
 
 }
